@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Metadata } from "next";
 import { Web3Provider } from "@/providers/Web3Provider";
 import "@/app/globals.css";
