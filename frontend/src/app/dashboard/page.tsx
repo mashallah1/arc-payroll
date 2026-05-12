@@ -2,7 +2,7 @@
 export const dynamic = "force-dynamic";
 
 import { Nav } from "@/components/Nav";
-import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useAccount, useConnect, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 
 import {
   FACTORY_ADDRESS, FACTORY_ABI, PAYROLL_ABI, USDC_ABI, USDC_ADDRESS,
