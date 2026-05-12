@@ -2,7 +2,7 @@
 export const dynamic = "force-dynamic";
 
 import { Nav } from "@/components/Nav";
-import { useAccount, useConnect, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useAccount, useConnect, useSwitchChain, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 
 import {
   FACTORY_ADDRESS, FACTORY_ABI, PAYROLL_ABI, USDC_ABI, USDC_ADDRESS,
@@ -541,6 +541,7 @@ function DepositModal({ payrollAddress, onClose, onSuccess }: {
 // ─── MAIN DASHBOARD ───────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const { connect, connectors } = useConnect();
+  const { switchChain } = useSwitchChain();
   const { address, isConnected, chain } = useAccount();
   
   const [showCreateModal, setShowCreateModal] = useState(false);
