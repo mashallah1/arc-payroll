@@ -492,8 +492,7 @@ function DepositModal({ payrollAddress, onClose, onSuccess }: {
                         display: "flex", alignItems: "center", justifyContent: "center",
                         fontSize: "0.6875rem", fontWeight: 600,
                       }}>
-                // @ts-ignore
-                        {(i === 0 && step === "deposit") || (i === 0 && step === "done") ? "✓" : i + 1}
+                        {(i === 0 && (step as string) === "deposit") || (i === 0 && (step as string) === "done") ? "✓" : i + 1}
                       </div>
                       <span style={{ fontSize: "0.8125rem", color: "var(--ink-muted)" }}>{s}</span>
                     </div>
