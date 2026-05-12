@@ -662,6 +662,7 @@ export default function DashboardPage() {
                 <div style={{ fontWeight: 300 }}>
                   Switch to Arc Testnet (Chain ID: 5042002) in your wallet to continue.
                 </div>
+              <button onClick={() => switchChain({ chainId: 5042002 })} style={{ marginTop: 12, padding: "8px 16px", background: "#000", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer", fontWeight: 500 }}>Switch to Arc Testnet</button>
               </div>
             </div>
           )}
