@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useAccount, useDisconnect, useBalance } from "wagmi";
+import { useAccount, useDisconnect, useBalance, useConnect } from "wagmi";
 
 import { shortAddr, USDC_ADDRESS } from "@/lib/contracts";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { useState } from "react";
 export function Nav() {
   const { address, isConnected, chain } = useAccount();
   const { disconnect } = useDisconnect();
+  const { connect, connectors } = useConnect();
   
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -52,7 +53,7 @@ export function Nav() {
             {!isConnected ? (
               <button
                 className="btn btn-primary btn-sm"
-                onClick={() => open()}
+                onClick={() => connect({ connector: connectors[1] || connectors[0] })}
               >
                 Connect Wallet
               </button>
