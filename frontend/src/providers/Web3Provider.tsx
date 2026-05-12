@@ -1,7 +1,7 @@
 "use client";
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { injected } from "wagmi/connectors";
+import { injected, walletConnect } from "wagmi/connectors";
 import { defineChain } from "viem";
 
 const arcTestnet = defineChain({
@@ -12,9 +12,14 @@ const arcTestnet = defineChain({
   testnet: true,
 });
 
+const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "";
+
 const config = createConfig({
   chains: [arcTestnet],
-  connectors: [injected()],
+  connectors: [
+    injected(),
+    walletConnect({ projectId }),
+  ],
   transports: { [arcTestnet.id]: http() },
   ssr: true,
 });
