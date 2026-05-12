@@ -15,8 +15,6 @@ Arc Payroll is a **decentralized payroll protocol** that lets organizations pay 
 
 Every payroll run is a smart contract interaction. Every payment is transparent, verifiable, and trustless.
 
-Built entirely on an Android device using Termux. 🔨📱
-
 ---
 
 ## Live Demo
