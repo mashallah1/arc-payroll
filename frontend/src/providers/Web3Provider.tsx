@@ -1,57 +1,44 @@
 "use client";
 
-import { WagmiProvider } from "wagmi";
+import { WagmiProvider, createConfig, http } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createAppKit } from "@reown/appkit/react";
-import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
-import { wagmiConfig, projectId, arcTestnet } from "@/lib/wagmi";
+import { defineChain } from "viem";
+import { injected, walletConnect } from "wagmi/connectors";
 
-// ─── AppKit (Reown) setup ─────────────────────────────────────────────────────
-// This gives us the full wallet picker modal — detects all installed extensions,
-// shows QR code for mobile wallets, works in Brave/Chrome/Firefox.
-
-const wagmiAdapter = new WagmiAdapter({
-  networks: [arcTestnet],
-  projectId,
+const arcTestnet = defineChain({
+  id: 5042002,
+  name: "Arc Testnet",
+  nativeCurrency: { name: "USD Coin", symbol: "USDC", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://rpc.testnet.arc.network"] },
+  },
+  blockExplorers: {
+    default: { name: "ArcScan", url: "https://testnet.arcscan.app" },
+  },
+  testnet: true,
 });
 
-createAppKit({
-  adapters: [wagmiAdapter],
-  networks: [arcTestnet],
-  projectId,
-  metadata: {
-    name: "Arc Payroll",
-    description: "Trustless global payroll on Arc. Pay workers in their local currency, settled in under a second.",
-    url: typeof window !== "undefined" ? window.location.origin : "https://localhost:3000",
-    icons: ["https://avatars.githubusercontent.com/u/179229932"],
+const config = createConfig({
+  chains: [arcTestnet],
+  connectors: [
+    injected(),
+    walletConnect({ projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "" }),
+  ],
+  transports: {
+    [arcTestnet.id]: http("https://rpc.testnet.arc.network"),
   },
-  features: {
-    analytics: false,
-    email: false,
-    socials: false,
-  },
-  themeMode: "light",
-  themeVariables: {
-    "--w3m-accent": "#1a1a1a",
-    "--w3m-border-radius-master": "4px",
-  },
+  ssr: true,
 });
 
-// ─── Query client ─────────────────────────────────────────────────────────────
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      staleTime: 10_000,
-      refetchInterval: 15_000,
-      retry: 2,
-    },
+    queries: { staleTime: 10_000, refetchInterval: 15_000, retry: 2 },
   },
 });
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
 export function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         {children}
       </QueryClientProvider>
