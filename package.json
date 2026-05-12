@@ -5,11 +5,12 @@
   "type": "module",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "viem": "^2.21.0"
+    "viem": "^2.21.0",
+    "wagmi": "^2.5.7"
   },
   "devDependencies": {
-    "hardhat": "^2.22.3",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }
