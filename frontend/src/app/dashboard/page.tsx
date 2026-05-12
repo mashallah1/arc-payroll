@@ -540,6 +540,7 @@ function DepositModal({ payrollAddress, onClose, onSuccess }: {
 
 // ─── MAIN DASHBOARD ───────────────────────────────────────────────────────────
 export default function DashboardPage() {
+  const { connect, connectors } = useConnect();
   const { address, isConnected, chain } = useAccount();
   
   const [showCreateModal, setShowCreateModal] = useState(false);

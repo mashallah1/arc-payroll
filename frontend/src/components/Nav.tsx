@@ -1,8 +1,6 @@
 "use client";
-
 import Link from "next/link";
 import { useAccount, useDisconnect, useBalance, useConnect } from "wagmi";
-
 import { shortAddr, USDC_ADDRESS } from "@/lib/contracts";
 import { useState } from "react";
 
@@ -10,8 +8,8 @@ export function Nav() {
   const { address, isConnected, chain } = useAccount();
   const { disconnect } = useDisconnect();
   const { connect, connectors } = useConnect();
-  
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showWalletMenu, setShowWalletMenu] = useState(false);
 
   const { data: usdcBalance } = useBalance({
     address,
@@ -23,125 +21,88 @@ export function Nav() {
 
   return (
     <nav className="nav">
-      <div className="container">
-        <div className="nav-inner">
-          {/* Logo */}
-          <Link href="/" className="nav-logo">
-            <span className="nav-logo-mark">arc/payroll</span>
-            <span className="nav-logo-sub">testnet</span>
-          </Link>
+      <div className="container nav-inner">
+        <Link href="/" className="nav-logo">
+          <span className="nav-logo-name">arc/payroll</span>
+          <span className="nav-logo-sub">testnet</span>
+        </Link>
 
-          {/* Center links */}
-          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <Link href="/" className="btn btn-ghost btn-sm">
-              Network
-            </Link>
-            <Link href="/dashboard" className="btn btn-ghost btn-sm">
-              Dashboard
-            </Link>
-          </div>
+        <div className="nav-actions">
+          {wrongNetwork && (
+            <span className="badge badge-amber">
+              <span className="badge-dot" />
+              Wrong network
+            </span>
+          )}
 
-          {/* Wallet */}
-          <div className="nav-actions">
-            {wrongNetwork && (
-              <span className="badge badge-amber">
-                <span className="badge-dot" />
-                Wrong network
-              </span>
-            )}
-
-            {!isConnected ? (
+          {!isConnected ? (
+            <div style={{ position: "relative" }}>
               <button
                 className="btn btn-primary btn-sm"
-                onClick={() => connect({ connector: connectors[1] || connectors[0] })}
+                onClick={() => setShowWalletMenu(!showWalletMenu)}
               >
                 Connect Wallet
               </button>
-            ) : (
-              <div style={{ position: "relative" }}>
-                <button
-                  className="btn btn-secondary btn-sm"
-                  onClick={() => setMenuOpen((o) => !o)}
-                  style={{ display: "flex", alignItems: "center", gap: 8 }}
-                >
-                  <span
-                    style={{
-                      width: 7,
-                      height: 7,
-                      borderRadius: "50%",
-                      background: "var(--green)",
-                      flexShrink: 0,
-                    }}
-                  />
-                  <span className="mono">{shortAddr(address!)}</span>
-                  {usdcBalance && (
-                    <span style={{ color: "var(--ink-muted)", fontSize: "0.75rem" }}>
-                      {parseFloat(usdcBalance.formatted).toFixed(2)} USDC
-                    </span>
-                  )}
-                </button>
-
-                {/* Dropdown */}
-                {menuOpen && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "calc(100% + 8px)",
-                      right: 0,
-                      background: "var(--cream-light)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "var(--r-lg)",
-                      padding: "8px",
-                      minWidth: 200,
-                      zIndex: 50,
-                      boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-                      animation: "slideUp 0.15s ease",
-                    }}
-                  >
-                    <div
-                      style={{
-                        padding: "8px 12px 12px",
-                        borderBottom: "1px solid var(--border-light)",
-                        marginBottom: 4,
-                      }}
-                    >
-                      <div className="label" style={{ marginBottom: 4 }}>
-                        Connected
-                      </div>
-                      <div
-                        className="mono"
-                        style={{ fontSize: "0.75rem", color: "var(--ink-muted)" }}
-                      >
-                        {address}
-                      </div>
-                    </div>
-                    <Link
-                      href="/dashboard"
-                      className="btn btn-ghost btn-sm"
-                      style={{ width: "100%", justifyContent: "flex-start" }}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      My Dashboard
-                    </Link>
+              {showWalletMenu && (
+                <div style={{
+                  position: "absolute", right: 0, top: "110%",
+                  background: "var(--cream)", border: "1px solid var(--border)",
+                  borderRadius: 8, padding: 8, minWidth: 200, zIndex: 100,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)"
+                }}>
+                  {connectors.map((connector) => (
                     <button
-                      className="btn btn-ghost btn-sm"
-                      style={{
-                        width: "100%",
-                        justifyContent: "flex-start",
-                        color: "var(--red)",
-                      }}
+                      key={connector.id}
                       onClick={() => {
-                        disconnect();
-                        setMenuOpen(false);
+                        connect({ connector });
+                        setShowWalletMenu(false);
+                      }}
+                      style={{
+                        display: "block", width: "100%", padding: "10px 14px",
+                        textAlign: "left", background: "none", border: "none",
+                        cursor: "pointer", fontSize: "0.875rem",
+                        borderRadius: 6, color: "var(--ink)"
                       }}
                     >
-                      Disconnect
+                      {connector.name}
                     </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{ position: "relative" }}>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={() => setMenuOpen((o) => !o)}
+              >
+                {shortAddr(address!)} · {(Number(usdcBalance?.value || 0n) / 1e6).toFixed(2)} USDC
+              </button>
+              {menuOpen && (
+                <div style={{
+                  position: "absolute", right: 0, top: "110%",
+                  background: "var(--cream)", border: "1px solid var(--border)",
+                  borderRadius: 8, padding: 8, minWidth: 180, zIndex: 100,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)"
+                }}>
+                  <Link href="/dashboard" onClick={() => setMenuOpen(false)}
+                    style={{ display: "block", padding: "10px 14px", fontSize: "0.875rem", color: "var(--ink)", textDecoration: "none" }}>
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => { disconnect(); setMenuOpen(false); }}
+                    style={{
+                      display: "block", width: "100%", padding: "10px 14px",
+                      textAlign: "left", background: "none", border: "none",
+                      cursor: "pointer", fontSize: "0.875rem",
+                      color: "var(--red)", borderRadius: 6
+                    }}>
+                    Disconnect
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </nav>
