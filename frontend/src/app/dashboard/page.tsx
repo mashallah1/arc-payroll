@@ -2,7 +2,7 @@
 
 import { Nav } from "@/components/Nav";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-import { useAppKit } from "@reown/appkit/react";
+
 import {
   FACTORY_ADDRESS, FACTORY_ABI, PAYROLL_ABI, USDC_ABI, USDC_ADDRESS,
   formatUSDC, shortAddr, secondsToParts, CURRENCIES, PAY_PERIODS
@@ -540,7 +540,7 @@ function DepositModal({ payrollAddress, onClose, onSuccess }: {
 // ─── MAIN DASHBOARD ───────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const { address, isConnected, chain } = useAccount();
-  const { open } = useAppKit();
+  
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const refresh = () => setRefreshKey(k => k + 1);
@@ -614,7 +614,7 @@ export default function DashboardPage() {
                   and manage disbursements on Arc testnet.
                 </p>
                 <button className="btn btn-primary btn-lg" style={{ width: "100%" }}
-                  onClick={() => open()}>
+                  onClick={() => {}}>
                   Connect wallet
                 </button>
                 <div style={{ marginTop: 16, fontSize: "0.8125rem", color: "var(--ink-faint)" }}>
