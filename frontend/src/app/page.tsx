@@ -1,7 +1,5 @@
 "use client";
-// @ts-nocheck
 export const dynamic = "force-dynamic";
-// @ts-nocheck
 "use client";
 
 import { Nav } from "@/components/Nav";
