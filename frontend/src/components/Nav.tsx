@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { useAccount, useDisconnect, useBalance } from "wagmi";
-import { useAppKit } from "@reown/appkit/react";
+
 import { shortAddr, USDC_ADDRESS } from "@/lib/contracts";
 import { useState } from "react";
 
 export function Nav() {
   const { address, isConnected, chain } = useAccount();
   const { disconnect } = useDisconnect();
-  const { open } = useAppKit();
+  
   const [menuOpen, setMenuOpen] = useState(false);
 
   const { data: usdcBalance } = useBalance({

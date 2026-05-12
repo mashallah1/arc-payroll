@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "/data/data/com.termux/files/usr/bin/node ./node_modules/next/dist/bin/next dev --webpack",
-    "build": "./node_modules/.bin/next build",
+    "build": "next build",
     "start": "./node_modules/.bin/next start"
   },
   "keywords": [],
