@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['@reown/appkit', '@reown/appkit-adapter-wagmi', '@walletconnect/ethereum-provider'],
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -7,15 +8,6 @@ const nextConfig = {
       net: false,
       tls: false,
     };
-    config.externals.push(
-      "@coinbase/wallet-sdk",
-      "@metamask/connect-evm",
-      "porto/internal",
-      "porto",
-      "pino-pretty",
-      "lokijs",
-      "encoding"
-    );
     return config;
   },
 };
