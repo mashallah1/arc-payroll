@@ -17,7 +17,7 @@ function CreatePayrollModal({ onClose, onSuccess }: { onClose: () => void; onSuc
   const [label, setLabel] = useState("");
   const [period, setPeriod] = useState(PAY_PERIODS[2]); // monthly default
   const [firstDate, setFirstDate] = useState("");
-  const [step, setStep] = useState<"form" | "confirming" | "done">("form");
+  const [step, setStep] = useState<"form" | "confirming" | "done" | "deposit" | "approve">("form");
 
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
