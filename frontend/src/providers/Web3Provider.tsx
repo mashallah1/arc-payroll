@@ -20,8 +20,8 @@ const config = createConfig({
     injected(),
     walletConnect({ projectId }),
   ],
-  transports: { [arcTestnet.id]: http() },
-  ssr: true,
+  transports: { [arcTestnet.id]: http("https://rpc.testnet.arc.network") },
+  ssr: false,
 });
 
 const queryClient = new QueryClient();
