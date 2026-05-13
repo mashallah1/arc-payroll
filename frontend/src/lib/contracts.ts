@@ -93,16 +93,7 @@ export const PAYROLL_ABI = [
       { name: "_paused",            type: "bool"    },
     ],
   },
-  {
-    name: "getSummary",
-    type: "function",
-    stateMutability: "view",
-    inputs: [],
-    outputs: [
-      { name: "_balance",         type: "uint256" },
-      { name: "_required",        type: "uint256" },
-      { name: "_shortfall",       type: "uint256" },
-      { name: "_isFunded",        type: "bool"    },
+
       { name: "_totalDisbursed",  type: "uint256" },
       { name: "_totalCyclesRun",  type: "uint256" },
       { name: "_activeRecipients",type: "uint256" },
