@@ -137,14 +137,12 @@ function EmployerPayrollCard({ address, onRefresh }: { address: `0x${string}`; o
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
 
-  const { data: sumA } = useReadContract({ address, abi: PAYROLL_ABI, functionName: "getSummaryA" });
-  const { data: sumB } = useReadContract({ address, abi: PAYROLL_ABI, functionName: "getSummaryB" });
+  const { data: sum } = useReadContract({ address, abi: PAYROLL_ABI, functionName: "getSummary" });
   const { data: recipients } = useReadContract({ address, abi: PAYROLL_ABI, functionName: "getRecipients" });
 
-  const a = sumA as any;
-  const b = sumB as any;
+  const a = sum as any;
 
-  if (!a || !b) return (
+  if (!a) return (
     <div className="card" style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--ink-muted)" }}>
       <span className="spinner" /> Loading…
     </div>
@@ -153,14 +151,14 @@ function EmployerPayrollCard({ address, onRefresh }: { address: `0x${string}`; o
   const label = a[0];
   const nextPayDate = Number(a[3]);
   const secondsLeft = Number(a[4]);
-  const isReady = a[5];
-  const paused = a[6];
-  const balance = b[0] as bigint;
-  const required = b[1] as bigint;
-  const isFunded = b[3];
-  const totalDisbursed = b[4] as bigint;
-  const totalCyclesRun = Number(b[5]);
-  const activeCount = Number(b[6]);
+  const balance = a[5] as bigint;
+  const required = a[6] as bigint;
+  const isFunded = a[7];
+  const isReady = a[9];
+  const paused = a[10];
+  const totalDisbursed = a[11] as bigint;
+  const totalCyclesRun = Number(a[12]);
+  const activeCount = Number(a[13]);
 
   const fundedPct = required > 0n ? Math.min(100, Number((balance * 100n) / required)) : 0;
   const { d, h, m } = secondsToParts(secondsLeft);

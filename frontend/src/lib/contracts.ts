@@ -79,7 +79,7 @@ export const FACTORY_ABI = [
 export const PAYROLL_ABI = [
   // Read
   {
-    name: "getSummaryA",
+    name: "getSummary",
     type: "function",
     stateMutability: "view",
     inputs: [],
@@ -94,7 +94,7 @@ export const PAYROLL_ABI = [
     ],
   },
   {
-    name: "getSummaryB",
+    name: "getSummary",
     type: "function",
     stateMutability: "view",
     inputs: [],
