@@ -94,11 +94,6 @@ export const PAYROLL_ABI = [
     ],
   },
 
-      { name: "_totalDisbursed",  type: "uint256" },
-      { name: "_totalCyclesRun",  type: "uint256" },
-      { name: "_activeRecipients",type: "uint256" },
-    ],
-  },
   {
     name: "getRecipients",
     type: "function",
