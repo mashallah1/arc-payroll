@@ -345,13 +345,13 @@ export default function PayrollPage({ params }: { params: { address: string } })
 
   const wrongNetwork = isConnected && chain?.id !== arcTestnet.id;
 
-  const { data: sum, refetch: refetchA } = useReadContract({
+  const { data: sum, refetch: refetch } = useReadContract({
     address: payrollAddress,
     abi: PAYROLL_ABI,
     functionName: "getSummary",
   });
 
-  const { data: sum, refetch: refetchB } = useReadContract({
+  const { data: sum, refetch: refetch } = useReadContract({
     address: payrollAddress,
     abi: PAYROLL_ABI,
     functionName: "getSummary",
@@ -363,12 +363,12 @@ export default function PayrollPage({ params }: { params: { address: string } })
     functionName: "getRecipients",
   });
 
-  const refetchAll = useCallback(() => {
-    refetchA(); refetchB(); refetchRecipients();
+  const refetchll = useCallback(() => {
+    refetch(); refetch(); refetchRecipients();
     setRefreshKey(k => k + 1);
-  }, [refetchA, refetchB, refetchRecipients]);
+  }, [refetch, refetch, refetchRecipients]);
 
-  useEffect(() => { refetchAll(); }, [refreshKey]);
+  useEffect(() => { refetchll(); }, [refreshKey]);
 
   const a = sum as any;
   const b = sum as any;
@@ -585,7 +585,7 @@ export default function PayrollPage({ params }: { params: { address: string } })
                       payrollAddress={payrollAddress}
                       isReady={isReady}
                       isFunded={isFunded}
-                      onSuccess={refetchAll}
+                      onSuccess={refetchll}
                     />
                   </div>
                 </div>
