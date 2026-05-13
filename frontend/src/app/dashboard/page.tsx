@@ -556,7 +556,7 @@ export default function DashboardPage() {
     abi: FACTORY_ABI,
     functionName: "getEmployerPayrolls",
     args: address ? [address] : undefined,
-    query: { enabled: !!address },
+    query: { enabled: !!address && !wrongNetwork },
   });
 
   // Employee's payrolls
