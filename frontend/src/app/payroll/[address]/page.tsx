@@ -345,16 +345,16 @@ export default function PayrollPage({ params }: { params: { address: string } })
 
   const wrongNetwork = isConnected && chain?.id !== arcTestnet.id;
 
-  const { data: sumA, refetch: refetchA } = useReadContract({
+  const { data: sum, refetch: refetchA } = useReadContract({
     address: payrollAddress,
     abi: PAYROLL_ABI,
-    functionName: "getSummaryA",
+    functionName: "getSummary",
   });
 
-  const { data: sumB, refetch: refetchB } = useReadContract({
+  const { data: sum, refetch: refetchB } = useReadContract({
     address: payrollAddress,
     abi: PAYROLL_ABI,
-    functionName: "getSummaryB",
+    functionName: "getSummary",
   });
 
   const { data: recipients, refetch: refetchRecipients } = useReadContract({
@@ -370,8 +370,8 @@ export default function PayrollPage({ params }: { params: { address: string } })
 
   useEffect(() => { refetchAll(); }, [refreshKey]);
 
-  const a = sumA as any;
-  const b = sumB as any;
+  const a = sum as any;
+  const b = sum as any;
 
   const isOwner = isConnected && userAddress && a && a[1]?.toLowerCase() === userAddress?.toLowerCase();
 
