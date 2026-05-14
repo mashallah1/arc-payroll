@@ -351,11 +351,6 @@ export default function PayrollPage({ params }: { params: { address: string } })
     functionName: "getSummary",
   });
 
-  const { data: sum, refetch: refetch } = useReadContract({
-    address: payrollAddress,
-    abi: PAYROLL_ABI,
-    functionName: "getSummary",
-  });
 
   const { data: recipients, refetch: refetchRecipients } = useReadContract({
     address: payrollAddress,
