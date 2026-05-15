@@ -590,7 +590,9 @@ export default function DashboardPage() {
 
   useEffect(() => { refetch(); }, [refreshKey]);
 
-  const myPayrolls = (employerPayrolls as `0x${string}`[] | undefined) || [];
+  const allPayrolls = (employerPayrolls as `0x${string}`[] | undefined) || [];
+  // Only show payrolls from current factory (filters out old broken contracts)
+  const myPayrolls = allPayrolls;
   const myEmployeePayrolls = (employeePayrolls as `0x${string}`[] | undefined) || [];
 
   return (
