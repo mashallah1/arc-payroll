@@ -16,7 +16,11 @@ import Link from "next/link";
 function CreatePayrollModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
   const [label, setLabel] = useState("");
   const [period, setPeriod] = useState(PAY_PERIODS[2]); // monthly default
-  const [firstDate, setFirstDate] = useState("");
+  const [firstDate, setFirstDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 16);
+  });
   const [step, setStep] = useState<"form" | "confirming" | "done" | "deposit" | "approve">("form");
 
   const { writeContract, data: hash, isPending, error } = useWriteContract();
@@ -148,17 +152,17 @@ function EmployerPayrollCard({ address, onRefresh }: { address: `0x${string}`; o
     </div>
   );
 
-  const label = a[0];
-  const nextPayDate = Number(a[3]);
-  const secondsLeft = Number(a[4]);
-  const balance = a[5] as bigint;
-  const required = a[6] as bigint;
-  const isFunded = a[7];
-  const isReady = a[9];
-  const paused = a[10];
-  const totalDisbursed = a[11] as bigint;
-  const totalCyclesRun = Number(a[12]);
-  const activeCount = Number(a[13]);
+  const label = a._label ?? a[0];
+  const nextPayDate = Number(a._nextPayDate ?? a[3]);
+  const secondsLeft = Number(a._secondsUntilPayday ?? a[4]);
+  const balance = (a._balance ?? a[5]) as bigint;
+  const required = (a._required ?? a[6]) as bigint;
+  const isFunded = a._isFunded ?? a[7];
+  const isReady = a._isPaydayReady ?? a[9];
+  const paused = a._paused ?? a[10];
+  const totalDisbursed = (a._totalDisbursed ?? a[11]) as bigint;
+  const totalCyclesRun = Number(a._totalCyclesRun ?? a[12]);
+  const activeCount = Number(a._recipientCount ?? a[13]);
 
   const fundedPct = required > 0n ? Math.min(100, Number((balance * 100n) / required)) : 0;
   const { d, h, m } = secondsToParts(secondsLeft);
