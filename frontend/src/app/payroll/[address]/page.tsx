@@ -371,12 +371,12 @@ export default function PayrollPage({ params }: { params: { address: string } })
   const isOwner = isConnected && userAddress && a && a[1]?.toLowerCase() === userAddress?.toLowerCase();
 
   // Derived values
-  const label          = a?.[0] ?? "";
-  const owner          = a?.[1] as `0x${string}` | undefined;
+  const label          = a?._label ?? a?._label ?? a?.[0] ?? "";
+  const owner          = a?._owner ?? a?.[1] as `0x${string}` | undefined;
   const secondsLeft    = a ? Number(a[4]) : 0;
-  const isReady        = a?.[5] ?? false;
-  const paused         = a?.[6] ?? false;
-  const balance        = b ? (b[0] as bigint) : 0n;
+  const isReady        = a?._balance ?? a?.[5] ?? false;
+  const paused         = a?._required ?? a?.[6] ?? false;
+  const balance        = a ? ((a._balance ?? a[5]) as bigint) : 0n;
   const required       = b ? (b[1] as bigint) : 0n;
   const isFunded       = b?.[3] ?? false;
   const totalDisbursed = b ? (b[4] as bigint) : 0n;

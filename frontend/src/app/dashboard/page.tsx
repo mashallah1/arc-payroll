@@ -1,4 +1,5 @@
 "use client"
+import React from "react";
 export const dynamic = "force-dynamic";
 
 import { Nav } from "@/components/Nav";
@@ -145,10 +146,27 @@ function EmployerPayrollCard({ address, onRefresh }: { address: `0x${string}`; o
   const { data: recipients } = useReadContract({ address, abi: PAYROLL_ABI, functionName: "getRecipients" });
 
   const a = sum as any;
+  const [loadTimeout, setLoadTimeout] = React.useState(false);
+  React.useEffect(() => {
+    if (!a) {
+      const t = setTimeout(() => setLoadTimeout(true), 8000);
+      return () => clearTimeout(t);
+    }
+  }, [a]);
 
   if (!a) return (
     <div className="card" style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--ink-muted)" }}>
-      <span className="spinner" /> Loading…
+      {loadTimeout ? (
+        <span style={{ color: "var(--ink-faint)", fontSize: "0.875rem" }}>
+          ⚠️ Could not load payroll data.{" "}
+          <a href={`https://testnet.arcscan.app/address/${address}`} target="_blank" rel="noopener noreferrer"
+            style={{ color: "var(--ink-muted)", textDecoration: "underline" }}>
+            View on ArcScan ↗
+          </a>
+        </span>
+      ) : (
+        <><span className="spinner" /> Loading…</>
+      )}
     </div>
   );
 
