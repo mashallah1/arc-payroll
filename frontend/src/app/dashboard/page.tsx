@@ -146,8 +146,8 @@ function EmployerPayrollCard({ address, onRefresh }: { address: `0x${string}`; o
   const { data: recipients } = useReadContract({ address, abi: PAYROLL_ABI, functionName: "getRecipients" });
 
   const a = sum as any;
-  const [loadTimeout, setLoadTimeout] = React.useState(false);
-  React.useEffect(() => {
+  const [loadTimeout, setLoadTimeout] = useState(false);
+  useEffect(() => {
     if (!a) {
       const t = setTimeout(() => setLoadTimeout(true), 8000);
       return () => clearTimeout(t);
