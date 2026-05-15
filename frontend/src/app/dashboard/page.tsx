@@ -149,7 +149,7 @@ function EmployerPayrollCard({ address, onRefresh }: { address: `0x${string}`; o
   const [loadTimeout, setLoadTimeout] = useState(false);
   useEffect(() => {
     if (!a) {
-      const t = setTimeout(() => setLoadTimeout(true), 8000);
+      const t = setTimeout(() => setLoadTimeout(true), 15000);
       return () => clearTimeout(t);
     }
   }, [a]);
