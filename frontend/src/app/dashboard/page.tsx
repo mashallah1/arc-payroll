@@ -427,13 +427,13 @@ function DepositModal({ payrollAddress, onClose, onSuccess }: {
   const { data: allowance } = useReadContract({
     address: USDC_ADDRESS, abi: USDC_ABI, functionName: "allowance",
     args: address ? [address, payrollAddress] : undefined,
-    query: { enabled: !!address },
+    query: { enabled: !!address && !wrongNetwork },
   });
 
   const { data: usdcBal } = useReadContract({
     address: USDC_ADDRESS, abi: USDC_ABI, functionName: "balanceOf",
     args: address ? [address] : undefined,
-    query: { enabled: !!address },
+    query: { enabled: !!address && !wrongNetwork },
   });
 
   const { writeContract: approve, data: approveHash, isPending: approvePending, error: approveError } = useWriteContract();
@@ -585,7 +585,7 @@ export default function DashboardPage() {
     abi: FACTORY_ABI,
     functionName: "getEmployeePayrolls",
     args: address ? [address] : undefined,
-    query: { enabled: !!address },
+    query: { enabled: !!address && !wrongNetwork },
   });
 
   useEffect(() => { refetch(); }, [refreshKey]);

@@ -366,22 +366,21 @@ export default function PayrollPage({ params }: { params: { address: string } })
   useEffect(() => { refetchll(); }, [refreshKey]);
 
   const a = sum as any;
-  const b = sum as any;
 
   const isOwner = isConnected && userAddress && a && a[1]?.toLowerCase() === userAddress?.toLowerCase();
 
   // Derived values
-  const label          = a?._label ?? a?._label ?? a?.[0] ?? "";
+  const label          = a?._label ?? a?.[0] ?? "";
   const owner          = a?._owner ?? a?.[1] as `0x${string}` | undefined;
   const secondsLeft    = a ? Number(a[4]) : 0;
-  const isReady        = a?._balance ?? a?.[5] ?? false;
-  const paused         = a?._required ?? a?.[6] ?? false;
-  const balance        = a ? ((a._balance ?? a[5]) as bigint) : 0n;
-  const required       = b ? (b[1] as bigint) : 0n;
-  const isFunded       = b?.[3] ?? false;
-  const totalDisbursed = b ? (b[4] as bigint) : 0n;
-  const totalCycles    = b ? Number(b[5]) : 0;
-  const activeCount    = b ? Number(b[6]) : 0;
+  const isReady        = a?._isPaydayReady ?? a?.[9] ?? false;
+  const paused         = a?._paused ?? a?.[10] ?? false;
+  const balance        = a ? ((a._balance ?? a?.[5]) as bigint) : 0n;
+  const required       = a ? ((a._required ?? a?.[6]) as bigint) : 0n;
+  const isFunded       = a?._isFunded ?? a?.[8] ?? false;
+  const totalDisbursed = a ? ((a._totalDisbursed ?? a?.[11]) as bigint) : 0n;
+  const totalCycles    = a ? Number(a._totalCyclesRun ?? a?.[12]) : 0;
+  const activeCount    = a ? Number(a._recipientCount ?? a?.[13]) : 0;
 
   const fundedPct = required > 0n ? Math.min(100, Number((balance * 100n) / required)) : 0;
 
