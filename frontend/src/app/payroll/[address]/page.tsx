@@ -457,7 +457,7 @@ export default function PayrollPage({ params }: { params: { address: string } })
             </div>
           )}
 
-          {!a || !b ? (
+          {!a ? (
             <div style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--ink-muted)", padding: "40px 0" }}>
               <span className="spinner" /> Loading payroll data…
             </div>
