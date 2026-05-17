@@ -382,7 +382,7 @@ export default function PayrollPage({ params }: { params: { address: string } })
   const totalCycles    = a ? Number(a._totalCyclesRun ?? a?.[12]) : 0;
   const activeCount    = a ? Number(a._recipientCount ?? a?.[13]) : 0;
 
-  const fundedPct = required > 0n ? Math.min(100, Number((balance * 100n) / required)) : 0;
+  const fundedPct = required && required > 0n ? Math.min(100, Number(((balance ?? 0n) * 100n) / required)) : 0;
 
   // Is the connected user an employee on this payroll?
   const myEntry = (recipients as any[] | undefined)?.find(
@@ -496,7 +496,7 @@ export default function PayrollPage({ params }: { params: { address: string } })
                         style={{ width: `${fundedPct}%` }}
                       />
                     </div>
-                    {!isFunded && required > 0n && (
+                    {!isFunded && required && required > 0n && (
                       <div style={{ fontSize: "0.75rem", color: "var(--amber)", marginTop: 4 }}>
                         ↑ {formatUSDC(required - balance)} USDC needed before payday
                       </div>
