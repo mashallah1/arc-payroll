@@ -20,11 +20,20 @@ const config = createConfig({
     injected(),
     walletConnect({ projectId }),
   ],
-  transports: { [arcTestnet.id]: http("https://rpc.testnet.arc.network") },
+  transports: { [arcTestnet.id]: http("https://rpc.testnet.arc.network", { timeout: 10000, retryCount: 3 }) },
   ssr: false,
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      retryDelay: 1000,
+      staleTime: 10000,
+      gcTime: 60000,
+    },
+  },
+});
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
