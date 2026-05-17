@@ -591,8 +591,19 @@ export default function DashboardPage() {
   useEffect(() => { refetch(); }, [refreshKey]);
 
   const allPayrolls = (employerPayrolls as `0x${string}`[] | undefined) || [];
-  // Only show payrolls from current factory (filters out old broken contracts)
-  const myPayrolls = allPayrolls;
+  const { data: factoryPayrolls } = useReadContract({
+    address: FACTORY_ADDRESS,
+    abi: FACTORY_ABI,
+    functionName: "getAllPayrolls",
+    query: { staleTime: 30000 },
+  });
+  const factorySet = new Set(
+    ((factoryPayrolls as `0x${string}`[] | undefined) || [])
+      .map((a: string) => a.toLowerCase())
+  );
+  const myPayrolls = factorySet.size > 0
+    ? allPayrolls.filter(addr => factorySet.has(addr.toLowerCase()))
+    : allPayrolls;
   const myEmployeePayrolls = (employeePayrolls as `0x${string}`[] | undefined) || [];
 
   return (
