@@ -4,11 +4,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { injected, walletConnect } from "wagmi/connectors";
 import { defineChain } from "viem";
 
-const arcTestnet = defineChain({
+export const arcTestnet = defineChain({
   id: 5042002,
   name: "Arc Testnet",
   nativeCurrency: { name: "USD Coin", symbol: "USDC", decimals: 18 },
   rpcUrls: { default: { http: ["https://rpc.testnet.arc.network"] } },
+  blockExplorers: {
+    default: { name: "ArcScan", url: "https://testnet.arcscan.app" },
+  },
   testnet: true,
 });
 
@@ -20,17 +23,25 @@ const config = createConfig({
     injected(),
     walletConnect({ projectId }),
   ],
-  transports: { [arcTestnet.id]: http("https://rpc.testnet.arc.network", { timeout: 10000, retryCount: 3 }) },
+  transports: {
+    [arcTestnet.id]: http("https://rpc.testnet.arc.network", {
+      batch: false,
+      timeout: 30_000,
+      retryCount: 2,
+    }),
+  },
   ssr: false,
 });
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 2,
-      retryDelay: 1000,
-      staleTime: 10000,
-      gcTime: 60000,
+      retry: 1,
+      retryDelay: 1500,
+      staleTime: 15_000,
+      gcTime: 60_000,
+      refetchOnWindowFocus: false,
+      networkMode: "always",
     },
   },
 });
